@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DREAM CLIENT - v1.21.11</title>
+    <title>DREAM CLIENT - v1.21.11 (1.8.8)</title>
     <style>
         :root {
             --bg-obsidian: #0d0d0d;
@@ -234,21 +234,22 @@
             color: var(--text-muted);
         }
     </style>
-    <!-- Loads Eagtek engine core and missing texture asset library -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/eag-web-sp@1.0.4/classes1_mod.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/eag-web-sp@1.0.4/assets_uri.js"></script>
+    
+    <!-- Real EaglercraftX 1.8.8 scripts -->
+    <script type="text/javascript" src="classes.js"></script>
 </head>
-<body>
+<body style="margin:0px; padding:0px;">
 
     <div id="launcher_screen">
         <div class="launcher-content">
             <h1 style="color: var(--accent-gold); font-size: 3rem; margin-bottom: 5px; text-shadow: 0 0 10px var(--accent-gold-glow);">DREAM CLIENT</h1>
-            <p style="color: #fff; font-size: 1.2rem; margin-bottom: 30px; letter-spacing: 2px;">THE ULTIMATE GAMING EXPERIENCE</p>
-            <button class="launch-btn" onclick="startClient()">Launch Client</button>
+            <p style="color: #fff; font-size: 1.2rem; margin-bottom: 30px; letter-spacing: 2px;">THE ULTIMATE 1.8.8 MULTIPLAYER EXPERIENCE</p>
+            <button class="launch-btn" onclick="startClient()">Launch 1.8.8</button>
             <div class="version-tag">VERSION 1.21.11</div>
         </div>
     </div>
 
+    <!-- EaglercraftX canvas target container -->
     <div id="game_frame"></div>
 
     <div id="fps_display" class="hud-element">FPS: 144 (Optimized)</div>
@@ -281,13 +282,6 @@
                         <span class="slider"></span>
                     </label>
                 </div>
-                <div class="module-item">
-                    <span class="module-name">Optimize Chunk Loading</span>
-                    <label class="switch">
-                        <input type="checkbox" checked>
-                        <span class="slider"></span>
-                    </label>
-                </div>
             </div>
 
             <div class="category-card">
@@ -306,29 +300,22 @@
                         <span class="slider"></span>
                     </label>
                 </div>
-                <div class="module-item">
-                    <span class="module-name">Custom Keystrokes</span>
-                    <label class="switch">
-                        <input type="checkbox">
-                        <span class="slider"></span>
-                    </label>
-                </div>
             </div>
         </div>
         <div class="hint-text">Press <strong>Right Shift</strong> again to close settings menu.</div>
     </div>
 
     <script type="text/javascript">
-        // Helper to turn the asset data URI into raw data bytes
-        function base64ToUint8Array(base64) {
-            var binary_string = window.atob(base64);
-            var len = binary_string.length;
-            var bytes = new Uint8Array(len);
-            for (var i = 0; i < len; i++) {
-                bytes[i] = binary_string.charCodeAt(i);
-            }
-            return bytes;
-        }
+        // Standard EaglercraftX 1.8.8 Launch configuration
+        window.eaglercraftXOpts = {
+            container: "game_frame",
+            assetsURI: "assets.epk", // loads the 1.8.8 textures
+            localesURI: "lang/",
+            worldsDB: "worlds",
+            servers: [
+                { addr: "wss://8b4t.club", name: "8b4t Server" } // Preloaded 8b4t
+            ]
+        };
 
         function startClient() {
             document.getElementById('launcher_screen').style.opacity = '0';
@@ -336,16 +323,8 @@
                 document.getElementById('launcher_screen').style.display = 'none';
             }, 500);
 
-            // Dynamically decode and load assets into memory
-            if (window.assetsUri) {
-                window.assetsData = base64ToUint8Array(window.assetsUri.slice(28));
-            }
-
-            // Launch Game
-            if(typeof main === 'function') {
-                window.minecraftOpts = ["game_frame", ""];
-                main();
-            }
+            // Execute EaglercraftX 1.8.8 engine main thread
+            main();
         }
 
         const gui = document.getElementById('click_gui');
