@@ -234,8 +234,9 @@
             color: var(--text-muted);
         }
     </style>
-    <!-- Public CDN Script supporting CORS for Offline execution -->
+    <!-- Loads Eagtek engine core and missing texture asset library -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/eag-web-sp@1.0.4/classes1_mod.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/eag-web-sp@1.0.4/assets_uri.js"></script>
 </head>
 <body>
 
@@ -318,13 +319,29 @@
     </div>
 
     <script type="text/javascript">
+        // Helper to turn the asset data URI into raw data bytes
+        function base64ToUint8Array(base64) {
+            var binary_string = window.atob(base64);
+            var len = binary_string.length;
+            var bytes = new Uint8Array(len);
+            for (var i = 0; i < len; i++) {
+                bytes[i] = binary_string.charCodeAt(i);
+            }
+            return bytes;
+        }
+
         function startClient() {
             document.getElementById('launcher_screen').style.opacity = '0';
             setTimeout(() => {
                 document.getElementById('launcher_screen').style.display = 'none';
             }, 500);
 
-            // Directly run the loaded CDN engine
+            // Dynamically decode and load assets into memory
+            if (window.assetsUri) {
+                window.assetsData = base64ToUint8Array(window.assetsUri.slice(28));
+            }
+
+            // Launch Game
             if(typeof main === 'function') {
                 window.minecraftOpts = ["game_frame", ""];
                 main();
