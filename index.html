@@ -38,7 +38,6 @@
             background: #000;
         }
 
-        /* Launcher Screen Graphic Background */
         #launcher_screen {
             position: fixed;
             top: 0;
@@ -62,7 +61,6 @@
             padding: 20px;
         }
 
-        /* Big Gold Launch Button */
         .launch-btn {
             background: linear-gradient(135deg, var(--accent-gold), #b3922e);
             border: 2px solid #ffffff;
@@ -93,7 +91,7 @@
             text-shadow: 0 2px 4px rgba(0,0,0,0.8);
         }
 
-        /* ---------------- HUD OVERLAYS (IN-GAME) ---------------- */
+        /* ---------------- HUD OVERLAYS ---------------- */
         .hud-element {
             position: absolute;
             z-index: 5;
@@ -112,7 +110,7 @@
         #armor_hud { bottom: 65px; left: 15px; display: flex; gap: 8px; align-items: center; }
         #saturation_bar { bottom: 15px; right: 15px; }
 
-        /* ---------------- CLICK GUI OVERLAY (R-SHIFT) ---------------- */
+        /* ---------------- CLICK GUI (R-SHIFT) ---------------- */
         .gui-overlay {
             position: fixed;
             top: 0;
@@ -236,7 +234,8 @@
             color: var(--text-muted);
         }
     </style>
-    <script type="text/javascript" src="https://eaglercraft.com/classes.js"></script>
+    <!-- Public CDN Script supporting CORS for Offline execution -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/eag-web-sp@1.0.4/classes1_mod.js"></script>
 </head>
 <body>
 
@@ -251,7 +250,6 @@
 
     <div id="game_frame"></div>
 
-    <!-- Active HUD Overlays -->
     <div id="fps_display" class="hud-element">FPS: 144 (Optimized)</div>
     <div id="armor_hud" class="hud-element">
         <span>[Helmet: 100%]</span>
@@ -261,13 +259,11 @@
     </div>
     <div id="saturation_bar" class="hud-element">SATURATION: 20.0</div>
 
-    <!-- Click GUI Overlay (Right Shift) -->
     <div id="click_gui" class="gui-overlay">
         <div class="gui-header">
             <h2>DREAM CLIENT <span>v1.21.11 Options</span></h2>
         </div>
         <div class="gui-grid">
-            
             <div class="category-card">
                 <div class="category-title">Performance Options</div>
                 <div class="module-item">
@@ -317,7 +313,6 @@
                     </label>
                 </div>
             </div>
-
         </div>
         <div class="hint-text">Press <strong>Right Shift</strong> again to close settings menu.</div>
     </div>
@@ -329,17 +324,10 @@
                 document.getElementById('launcher_screen').style.display = 'none';
             }, 500);
 
-            const eaglercraftOpts = {
-                container: "game_frame",
-                // Pre-loaded 1.21 modern texture pack
-                assetsURI: "https://raw.githubusercontent.com/Eaglercraft-Texture-Packs/Eaglercraft-Texture-Packs.github.io/main/assets.epk",
-                serverList: [
-                    { name: "Aeon Network", address: "wss://aeon-network.net/1.8" }
-                ]
-            };
-            
+            // Directly run the loaded CDN engine
             if(typeof main === 'function') {
-                main(eaglercraftOpts);
+                window.minecraftOpts = ["game_frame", ""];
+                main();
             }
         }
 
